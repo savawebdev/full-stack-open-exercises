@@ -1,5 +1,14 @@
 import { useState } from "react";
 
+const MostVotes = ({ anecdotes, votes }) => {
+  const index = Object.keys(votes).reduce(
+    (a, b) => (votes[a] > votes[b] ? a : b),
+    0
+  );
+
+  return <p>{anecdotes[index]}</p>;
+};
+
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often",
@@ -31,10 +40,14 @@ const App = () => {
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{anecdotes[selected]}</p>
       <p>has {displayVotes} votes</p>
       <button onClick={handleVoteClick}>vote</button>
       <button onClick={handleClick}>next anecdote</button>
+
+      <h2>Anecdote with most votes</h2>
+      <MostVotes anecdotes={anecdotes} votes={votes} />
     </div>
   );
 };
