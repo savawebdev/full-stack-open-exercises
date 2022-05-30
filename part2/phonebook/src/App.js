@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ id: 1, name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
   const handleNameChange = (e) => {
@@ -11,8 +11,18 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault();
 
-    const newPerson = { id: persons.length + 1, name: newName };
-    setPersons([...persons, newPerson]);
+    const newPerson = { name: newName };
+
+    const checkPerson = persons.find(
+      (person) => person.name === newPerson.name
+    );
+
+    if (checkPerson) {
+      window.alert(`${newPerson.name} is already added to phonebook`);
+      return;
+    } else {
+      setPersons([...persons, newPerson]);
+    }
   };
 
   return (
@@ -30,7 +40,7 @@ const App = () => {
       <h2>Numbers</h2>
       <div>
         {persons.map((person) => (
-          <p key={person.id}>{person.name}</p>
+          <p key={person.name}>{person.name}</p>
         ))}
       </div>
     </div>
