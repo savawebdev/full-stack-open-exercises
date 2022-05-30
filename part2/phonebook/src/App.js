@@ -3,15 +3,20 @@ import { useState } from "react";
 const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
+  const [newPhone, setNewPhone] = useState("");
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
   };
 
+  const handlePhoneChange = (e) => {
+    setNewPhone(e.target.value);
+  };
+
   const addPerson = (e) => {
     e.preventDefault();
 
-    const newPerson = { name: newName };
+    const newPerson = { name: newName, phone: newPhone };
 
     const checkPerson = persons.find(
       (person) => person.name === newPerson.name
@@ -30,7 +35,12 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={handleNameChange} />
+          name:{" "}
+          <input type="text" value={newName} onChange={handleNameChange} />
+        </div>
+        <div>
+          number:{" "}
+          <input type="number" value={newPhone} onChange={handlePhoneChange} />
         </div>
         <div>
           <button type="submit">add</button>
@@ -40,7 +50,11 @@ const App = () => {
       <h2>Numbers</h2>
       <div>
         {persons.map((person) => (
-          <p key={person.name}>{person.name}</p>
+          <div key={person.name}>
+            <p>
+              {person.name} {person.phone}
+            </p>
+          </div>
         ))}
       </div>
     </div>
