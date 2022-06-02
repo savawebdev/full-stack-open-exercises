@@ -7,7 +7,7 @@ const DisplayWeather = ({ city }) => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const apiKey = "99854c2dd0b3b868ba56a5c296587926";
+    const apiKey = process.env.REACT_APP_API_KEY;
     axios
       .get(
         `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${apiKey}`
