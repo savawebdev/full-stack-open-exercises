@@ -61,6 +61,12 @@ const App = () => {
     }
   };
 
+  const deletePerson = (id) => {
+    personsService.deletePerson(id);
+    setPersons(persons.filter((person) => person.id !== id));
+    setFiltered(filtered.filter((person) => person.id !== id));
+  };
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -73,7 +79,7 @@ const App = () => {
 
       <Filter onChange={handleFilterChange} />
 
-      <DisplayPersons persons={filtered} />
+      <DisplayPersons persons={filtered} onDelete={deletePerson} />
     </div>
   );
 };
