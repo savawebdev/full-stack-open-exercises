@@ -54,7 +54,11 @@ const App = () => {
       window.alert(`${newPerson.name} is already added to phonebook`);
       return;
     } else {
-      setPersons([...persons, newPerson]);
+      axios.post("http://localhost:3001/persons", newPerson).then((res) => {
+        setPersons([...persons, res.data]);
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
 
