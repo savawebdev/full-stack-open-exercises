@@ -1,5 +1,6 @@
 import React from "react";
 import CountryInfo from "./CountryInfo";
+import ResultLine from "./ResultLine";
 
 const DisplayResults = ({ countries }) => {
   if (countries.length > 10) {
@@ -7,11 +8,10 @@ const DisplayResults = ({ countries }) => {
   }
 
   if (countries.length > 1 && countries.length <= 10) {
-    console.log(countries);
     return (
       <div>
         {countries.map((country) => (
-          <p key={country.name.common}>{country.name.common}</p>
+          <ResultLine country={country} key={country.name.common} />
         ))}
       </div>
     );
