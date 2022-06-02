@@ -51,7 +51,17 @@ const App = () => {
     );
 
     if (checkPerson) {
-      window.alert(`${newPerson.name} is already added to phonebook`);
+      const confirmation = window.confirm(
+        `${newPerson.name} is already added to phonebook, replace the old number with a new one?`
+      );
+
+      if (confirmation) {
+        personsService.update(checkPerson.id, newPerson).then((res) => {
+          setPersons(persons.map((p) => (p.id !== checkPerson.id ? p : res)));
+          setFiltered(persons.map((p) => (p.id !== checkPerson.id ? p : res)));
+        });
+      }
+
       return;
     } else {
       personsService.create(newPerson).then((res) => {
@@ -62,9 +72,15 @@ const App = () => {
   };
 
   const deletePerson = (id) => {
-    personsService.deletePerson(id);
-    setPersons(persons.filter((person) => person.id !== id));
-    setFiltered(filtered.filter((person) => person.id !== id));
+    const confirmation = window.confirm(
+      "Are you sure you want to delete this person?"
+    );
+
+    if (confirmation) {
+      personsService.deletePerson(id);
+      setPersons(persons.filter((person) => person.id !== id));
+      setFiltered(filtered.filter((person) => person.id !== id));
+    }
   };
 
   return (
