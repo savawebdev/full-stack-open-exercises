@@ -4,6 +4,7 @@ import personsService from "./services/persons";
 import DisplayPersons from "./components/DisplayPersons";
 import Filter from "./components/Filter";
 import NewPersonForm from "./components/NewPersonForm";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,6 +12,8 @@ const App = () => {
 
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((data) => {
@@ -59,6 +62,12 @@ const App = () => {
         personsService.update(checkPerson.id, newPerson).then((res) => {
           setPersons(persons.map((p) => (p.id !== checkPerson.id ? p : res)));
           setFiltered(persons.map((p) => (p.id !== checkPerson.id ? p : res)));
+
+          setSuccessMessage(`Number for ${checkPerson.name} was updated!`);
+
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
         });
       }
 
@@ -67,6 +76,12 @@ const App = () => {
       personsService.create(newPerson).then((res) => {
         setPersons([...persons, res]);
         setFiltered([...persons, res]);
+
+        setSuccessMessage(`Added ${newPerson.name}!`);
+
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
       });
     }
   };
@@ -86,6 +101,8 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+
+      <Notification message={successMessage} />
 
       <NewPersonForm
         submitHandler={addPerson}
