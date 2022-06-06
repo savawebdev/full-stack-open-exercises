@@ -49,7 +49,7 @@ app.post("/api/persons", (req, res) => {
   }
 
   if (persons.find((p) => p.name === body.name)) {
-    return res.status(400).json({ error: "Person is already added" });
+    return res.status(400).json({ error: "Person is already in phonebook" });
   }
 
   const person = {
