@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import personsService from "./services/persons";
 import DisplayPersons from "./components/DisplayPersons";
+import Error from "./components/Error";
 import Filter from "./components/Filter";
 import NewPersonForm from "./components/NewPersonForm";
 import Notification from "./components/Notification";
@@ -14,6 +15,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
 
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((data) => {
@@ -73,16 +75,24 @@ const App = () => {
 
       return;
     } else {
-      personsService.create(newPerson).then((res) => {
-        setPersons([...persons, res]);
-        setFiltered([...persons, res]);
+      personsService
+        .create(newPerson)
+        .then((res) => {
+          setPersons([...persons, res]);
+          setFiltered([...persons, res]);
 
-        setSuccessMessage(`Added ${newPerson.name}!`);
+          setSuccessMessage(`Added ${newPerson.name}!`);
 
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 5000);
-      });
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data.error);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        });
     }
   };
 
@@ -103,6 +113,7 @@ const App = () => {
       <h1>Phonebook</h1>
 
       <Notification message={successMessage} />
+      <Error message={errorMessage} />
 
       <NewPersonForm
         submitHandler={addPerson}
