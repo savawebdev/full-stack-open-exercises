@@ -36,6 +36,7 @@ app.use(
   morgan(`:method :url :status :res[content-length] :response-time ms :post`)
 );
 app.use(cors());
+app.use(express.static("build"));
 
 const generateId = () => {
   const id = Math.floor(Math.random() * 100000);
