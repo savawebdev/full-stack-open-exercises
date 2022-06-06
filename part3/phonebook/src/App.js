@@ -61,16 +61,26 @@ const App = () => {
       );
 
       if (confirmation) {
-        personsService.update(checkPerson.id, newPerson).then((res) => {
-          setPersons(persons.map((p) => (p.id !== checkPerson.id ? p : res)));
-          setFiltered(persons.map((p) => (p.id !== checkPerson.id ? p : res)));
+        personsService
+          .update(checkPerson.id, newPerson)
+          .then((res) => {
+            setPersons(persons.map((p) => (p.id !== checkPerson.id ? p : res)));
+            setFiltered(
+              persons.map((p) => (p.id !== checkPerson.id ? p : res))
+            );
 
-          setSuccessMessage(`Number for ${checkPerson.name} was updated!`);
+            setSuccessMessage(`Number for ${checkPerson.name} was updated!`);
 
-          setTimeout(() => {
-            setSuccessMessage(null);
-          }, 5000);
-        });
+            setTimeout(() => {
+              setSuccessMessage(null);
+            }, 5000);
+          })
+          .catch((error) => {
+            setErrorMessage(error.response.data.error);
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+          });
       }
 
       return;

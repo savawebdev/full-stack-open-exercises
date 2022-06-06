@@ -16,7 +16,7 @@ const NewPersonForm = ({ submitHandler, onChange, values }) => {
         <div>
           number:{" "}
           <input
-            type="number"
+            type="text"
             value={values.newNumber}
             onChange={onChange.handleNumberChange}
           />
