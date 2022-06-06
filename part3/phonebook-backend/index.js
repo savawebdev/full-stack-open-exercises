@@ -24,8 +24,43 @@ let persons = [
   },
 ];
 
+app.use(express.json());
+
+const generateId = () => {
+  const id = Math.floor(Math.random() * 100000);
+  const date = Date.now();
+
+  return id + date;
+};
+
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+
+app.post("/api/persons", (req, res) => {
+  const body = req.body;
+
+  if (!body.name) {
+    return res.status(400).json({ error: "Name missing" });
+  }
+
+  if (!body.number) {
+    return res.status(400).json({ error: "Number missing" });
+  }
+
+  if (persons.find((p) => p.name === body.name)) {
+    return res.status(400).json({ error: "Person is already added" });
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId(),
+  };
+
+  persons = persons.concat(person);
+
+  res.json(person);
 });
 
 app.get("/api/persons/:id", (req, res) => {
