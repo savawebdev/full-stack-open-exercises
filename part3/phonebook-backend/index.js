@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const Person = require("./models/person");
 
 let persons = [
   {
@@ -46,7 +48,9 @@ const generateId = () => {
 };
 
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  Person.find({}).then((persons) => {
+    res.json(persons);
+  });
 });
 
 app.post("/api/persons", (req, res) => {
@@ -76,15 +80,9 @@ app.post("/api/persons", (req, res) => {
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-
-  const person = persons.find((p) => p.id === id);
-
-  if (person) {
+  Person.findById(req.params.id).then((person) => {
     res.json(person);
-  } else {
-    res.status(404).end();
-  }
+  });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -96,13 +94,12 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.get("/info", (req, res) => {
-  const totalPersons = persons.length;
-  const date = new Date();
-
-  res.send(`
-  <p>Phonebook has info for ${totalPersons} people</p>
-  <p>${date}</p>
-  `);
+  Person.find({}).then((persons) => {
+    res.send(`
+    <p>Phonebook has info for ${persons.length} people</p>
+    <p>${new Date()}</p>
+    `);
+  });
 });
 
 const PORT = process.env.PORT || 3001;
