@@ -38,8 +38,6 @@ const mostBlogs = (blogs) => {
     authorsBlogs.push({ author, blogs: totalBlogs });
   });
 
-  console.log(authorsBlogs);
-
   const mostBlogsAuthor = authorsBlogs.reduce(
     (max, cur) => (cur.blogs > max.blogs ? cur : max),
     authorsBlogs[0],
@@ -48,4 +46,26 @@ const mostBlogs = (blogs) => {
   return mostBlogsAuthor;
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
+const mostLikes = (blogs) => {
+  const authors = [...new Set(blogs.map((blog) => blog.author))];
+
+  const authorsList = [];
+
+  authors.forEach((author) => {
+    const authorTotalLikes = blogs.reduce(
+      (likes, cur) => (cur.author === author ? likes + cur.likes : likes),
+      0,
+    );
+
+    authorsList.push({ author, likes: authorTotalLikes });
+  });
+
+  const mostLikesAuthor = authorsList.reduce(
+    (max, cur) => (cur.likes > max.likes ? cur : max),
+    authorsList[0],
+  );
+
+  return mostLikesAuthor;
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
