@@ -15,5 +15,6 @@ module.exports = {
     'no-underscore-dangle': 0,
     'no-unused-vars': 0,
     'consistent-return': 0,
+    'object-curly-newline': 0,
   },
 };

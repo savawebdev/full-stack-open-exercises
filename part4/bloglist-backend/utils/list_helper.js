@@ -24,4 +24,28 @@ const favoriteBlog = (blogs) => {
   return favorite;
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+const mostBlogs = (blogs) => {
+  const authors = [...new Set(blogs.map((blog) => blog.author))];
+
+  const authorsBlogs = [];
+
+  authors.forEach((author) => {
+    const totalBlogs = blogs.reduce(
+      (sum, cur) => (cur.author === author ? sum + 1 : sum),
+      0,
+    );
+
+    authorsBlogs.push({ author, blogs: totalBlogs });
+  });
+
+  console.log(authorsBlogs);
+
+  const mostBlogsAuthor = authorsBlogs.reduce(
+    (max, cur) => (cur.blogs > max.blogs ? cur : max),
+    authorsBlogs[0],
+  );
+
+  return mostBlogsAuthor;
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
